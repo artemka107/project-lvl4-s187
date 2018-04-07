@@ -1,5 +1,7 @@
 import path from 'path';
 import webpack from 'webpack';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import autoprefixer from 'autoprefixer';
 
 export default () => ({
   mode: 'development',
@@ -11,7 +13,7 @@ export default () => ({
     path: path.join(__dirname, 'public', 'assets'),
     publicPath: '/assets/',
   },
-  devtool: 'eval',
+  devtool: 'source-map',
   module: {
     rules: [
       {
@@ -20,15 +22,31 @@ export default () => ({
         use: 'babel-loader',
       },
       {
-        test: /\.css$/,
-        use: [
-          {
-            loader: 'style-loader/url',
-          },
-          {
-            loader: 'css-loader',
-          },
-        ],
+        test: /\.[s]?css$/,
+        use: ExtractTextPlugin.extract({
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true,
+                autoprefixer: false,
+                sourceMap: true,
+                importLoaders: 1,
+              },
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                sourceMap: true,
+                plugins: () =>
+                  [autoprefixer('last 2 versions')],
+              },
+            },
+            {
+              loader: 'sass-loader',
+            },
+          ],
+        }),
       },
     ],
   },
@@ -51,5 +69,6 @@ export default () => ({
       'window.jQuery': 'jquery',
       Popper: ['popper.js', 'default'],
     }),
+    new ExtractTextPlugin('style.css'),
   ],
 });

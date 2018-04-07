@@ -1,19 +1,34 @@
+import 'babel-polyfill';
+
 import path from 'path';
+import Rollbar from 'rollbar';
 import Koa from 'koa';
 import Router from 'koa-router';
 import Pug from 'koa-pug';
 import serve from 'koa-static';
 import middleware from 'koa-webpack';
 import bodyParser from 'koa-bodyparser';
+import dotenv from 'dotenv';
 import session from 'koa-generic-session';
 import flash from 'koa-flash-simple';
 import _ from 'lodash';
 import methodOverride from 'koa-methodoverride';
 import addRoutes from './routes';
-import getWebpackConfig from './webpack.config.babel';
+import getWebpackConfig from './webpack.config.dev.babel';
 
 export default () => {
+  dotenv.config();
+
   const app = new Koa();
+
+  const rollbar = new Rollbar('POST_SERVER_ITEM_ACCESS_TOKEN');
+  app.use(async (ctx, next) => {
+    try {
+      await next();
+    } catch (err) {
+      rollbar.error(err, ctx.request);
+    }
+  });
 
   app.use(session(app));
   app.use(flash());
@@ -51,6 +66,9 @@ export default () => {
   if (process.env.NODE_ENV !== 'production') {
     app.use(middleware({
       config: getWebpackConfig(),
+      dev: {
+        publicPath: getWebpackConfig().output.publicPath,
+      },
     }));
   }
 

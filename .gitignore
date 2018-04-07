@@ -1,3 +1,5 @@
 dits
 /node_modules/
 *.log
+.env
+*.sqlite
