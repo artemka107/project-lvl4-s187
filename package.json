@@ -4,7 +4,7 @@
   "description": "task manager",
   "main": "dist/index.js",
   "engines": {
-    "node": ">9"
+    "node": ">=9"
   },
   "jest": {
     "testEnvironment": "node"
