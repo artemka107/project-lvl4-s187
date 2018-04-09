@@ -5,7 +5,7 @@ describe('requests', () => {
   let server;
 
   beforeAll(() => {
-    server = getApp.listen();
+    server = getApp().listen();
   });
 
   test('GET 200', async () => {
