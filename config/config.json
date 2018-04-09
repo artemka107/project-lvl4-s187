@@ -1,0 +1,12 @@
+{
+  "development": {
+    "url": "sqlite:./db.dev.sqlite"
+  },
+  "test": {
+    "storage": ":memory:",
+    "dialect": "sqlite"
+  },
+  "production": {
+    "url": "process.env.DATABSE_URL"
+  }
+}

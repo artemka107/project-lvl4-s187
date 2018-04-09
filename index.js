@@ -14,7 +14,7 @@ import flash from 'koa-flash-simple';
 import _ from 'lodash';
 import methodOverride from 'koa-methodoverride';
 import addRoutes from './routes';
-import getWebpackConfig from './webpack.config.dev.babel';
+import getWebpackConfig from './webpack.config.babel';
 
 export default () => {
   dotenv.config();

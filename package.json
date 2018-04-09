@@ -17,9 +17,10 @@
     "test:watch": "jest --watch",
     "babel-node": "babel-node",
     "start": "gulp server",
-    "build": "npm run webpack --config webpack.config.prod.babel.js",
+    "build": "npm run webpack -- -p --env production",
     "eslint": "eslint",
-    "webpack": "webpack"
+    "webpack": "webpack",
+    "heroku-postbuild": "npm run build"
   },
   "author": "Artem Ivanec",
   "license": "ISC",
@@ -79,6 +80,7 @@
     "superagent": "*",
     "supertest": "*",
     "uglifyjs-webpack-plugin": "^1.2.4",
+    "webpack-cli": "^2.0.14",
     "webpack-hot-client": "^2.2.1"
   }
 }

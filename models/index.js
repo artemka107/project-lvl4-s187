@@ -7,12 +7,11 @@ dotenv.config();
 
 const db = {};
 
-const isDev = process.env.NODE_ENV === 'development';
+const env = process.env.NODE_ENV || 'development';
+const configFile = fs.readFileSync(path.join(__dirname, '..', 'config/config.json'), 'utf8');
+const config = JSON.parse(configFile)[env];
 
-const pathToSqlight = 'sqlite:./db.sqlite';
-const pgUrl = process.env.DATABASE_URL;
-
-const sequelize = new Sequelize(isDev ? pathToSqlight : pgUrl);
+const sequelize = new Sequelize(config.url);
 
 const isModel = file =>
   path.extname(file) === '.js' && file !== 'index.js';
